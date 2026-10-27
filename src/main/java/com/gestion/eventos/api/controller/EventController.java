@@ -1,14 +1,12 @@
 package com.gestion.eventos.api.controller;
 
 import com.gestion.eventos.api.domain.Event;
+import com.gestion.eventos.api.dto.EventRequestDto;
 import com.gestion.eventos.api.dto.EventResponseDto;
 import com.gestion.eventos.api.mapper.EventMapper;
 import com.gestion.eventos.api.service.IEventService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,4 +26,9 @@ public class EventController {
     }
 
     @PostMapping
+    public EventResponseDto createEvent(@RequestBody EventRequestDto requestDto) {
+        Event eventToSave = eventMapper.toEntity(requestDto);
+        Event eventSaved = eventService.save(eventToSave);
+        return eventMapper.toResponseDto(eventSaved);
+    }
 }
