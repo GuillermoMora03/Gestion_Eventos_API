@@ -32,4 +32,9 @@ public class EventService implements IEventService{
                 () -> new ResourceNotFoundException("Evento no encontrado con id: " + id)
         );
     }
+
+    @Override
+    public void deleteById(Long id) {
+
+    }
 }
