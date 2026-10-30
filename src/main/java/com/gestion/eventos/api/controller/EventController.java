@@ -52,4 +52,12 @@ public class EventController {
         Event updateEvent = eventService.save(eventToUpdate);
         return ResponseEntity.ok(eventMapper.toResponseDto(updateEvent));
     }
+
+    // Cuando la eliminación es exitosa, el estandar rest dice que debemos devolver un código
+    // de estado 204 No content
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id){
+        eventService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
