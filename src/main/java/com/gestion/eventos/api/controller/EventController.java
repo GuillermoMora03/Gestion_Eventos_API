@@ -5,7 +5,10 @@ import com.gestion.eventos.api.dto.EventRequestDto;
 import com.gestion.eventos.api.dto.EventResponseDto;
 import com.gestion.eventos.api.mapper.EventMapper;
 import com.gestion.eventos.api.service.IEventService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,9 +29,35 @@ public class EventController {
     }
 
     @PostMapping
-    public EventResponseDto createEvent(@RequestBody EventRequestDto requestDto) {
+    public ResponseEntity <EventResponseDto> createEvent(@Valid @RequestBody EventRequestDto requestDto) {
         Event eventToSave = eventMapper.toEntity(requestDto);
         Event eventSaved = eventService.save(eventToSave);
-        return eventMapper.toResponseDto(eventSaved);
+        EventResponseDto responseDto = eventMapper.toResponseDto(eventSaved);
+
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EventResponseDto> getEventById(@PathVariable Long id) {
+        Event event = eventService.findById(id);
+        EventResponseDto responseDto = eventMapper.toResponseDto(event);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EventResponseDto> updateEvent(@PathVariable Long id,
+                                                        @Valid @RequestBody EventRequestDto requestDto) {
+        Event eventToUpdate = eventService.findById(id);
+        eventMapper.updateEventFromDto(requestDto, eventToUpdate);
+        Event updateEvent = eventService.save(eventToUpdate);
+        return ResponseEntity.ok(eventMapper.toResponseDto(updateEvent));
+    }
+
+    // Cuando la eliminación es exitosa, el estandar rest dice que debemos devolver un código
+    // de estado 204 No content
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id){
+        eventService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
