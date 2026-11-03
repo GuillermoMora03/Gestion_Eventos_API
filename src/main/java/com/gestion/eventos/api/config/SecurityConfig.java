@@ -24,7 +24,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
-                        auth.anyRequest().authenticated()
+                        auth
+                                .requestMatchers("/api/v1/auth/**").permitAll() // Con esto le decimos que cualquier ruta que empiece con api/v1/auth no necesita autenticacion
+                                .anyRequest().authenticated() // En cambio aqui le decimos que las demas rutas necesitan autenticación
                 )
                 .httpBasic(Customizer.withDefaults());
         return http.build();
