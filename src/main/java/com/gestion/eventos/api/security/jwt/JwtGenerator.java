@@ -12,9 +12,9 @@ import java.util.Date;
 
 @Component
 public class JwtGenerator {
-    @Value("{jwt.secret}")
+    @Value("${jwt.secret}")
     private String jwtSecret;
-    @Value("{jwt.expiration}")
+    @Value("${jwt.expiration}")
     private Long jwtExpiration;
 
     //Puede ser Key o SecretKey depende si en la construcción del token queremos castear o no
