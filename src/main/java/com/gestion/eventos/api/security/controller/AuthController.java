@@ -1,10 +1,9 @@
-package com.gestion.eventos.api.controller;
+package com.gestion.eventos.api.security.controller;
 
-import com.gestion.eventos.api.domain.Role;
 import com.gestion.eventos.api.domain.User;
-import com.gestion.eventos.api.dto.JwtAuthResponseDto;
-import com.gestion.eventos.api.dto.LoginDto;
-import com.gestion.eventos.api.dto.RegisterDto;
+import com.gestion.eventos.api.security.dto.JwtAuthResponseDto;
+import com.gestion.eventos.api.security.dto.LoginDto;
+import com.gestion.eventos.api.security.dto.RegisterDto;
 import com.gestion.eventos.api.mapper.UserMapper;
 import com.gestion.eventos.api.repository.UserRepository;
 import com.gestion.eventos.api.security.jwt.JwtGenerator;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collections;
 
 @RestController
 @RequiredArgsConstructor
