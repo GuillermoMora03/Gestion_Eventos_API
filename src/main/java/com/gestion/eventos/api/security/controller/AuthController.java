@@ -6,7 +6,6 @@ import com.gestion.eventos.api.dto.JwtAuthResponseDto;
 import com.gestion.eventos.api.dto.LoginDto;
 import com.gestion.eventos.api.dto.RegisterDto;
 import com.gestion.eventos.api.mapper.UserMapper;
-import com.gestion.eventos.api.repository.RoleRepository;
 import com.gestion.eventos.api.repository.UserRepository;
 import com.gestion.eventos.api.security.jwt.JwtGenerator;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,6 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtGenerator jwtGenerator;
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
@@ -61,12 +59,6 @@ public class AuthController {
 
         User user = userMapper.registerDtoToUser(registerDto);
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-
-        Role roles = roleRepository.findByName("ROLE_USER")
-                .orElseThrow( () ->
-                        new RuntimeException("Error, el rol de usuario no existe")
-                        );
-        user.setRoles(Collections.singleton(roles));
 
         userRepository.save(user);
 
